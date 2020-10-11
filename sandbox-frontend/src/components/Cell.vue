@@ -34,7 +34,7 @@ export default class Cell extends Vue {
       result = cell.numberValue;
     } else if (!cell.isBlocked) {
       if (cell.isFlag) {
-        return "F";
+        return "⚐";
       } else {
         result = cell.probability.toFixed(2) * 100;
         if (cell.isFlag && !cell.showNumbers) {
@@ -60,13 +60,18 @@ export default class Cell extends Vue {
 
     let bgColor;
 
-    if (cell.showNumbers) {
+    if (cell.showNumbers && cell.numberValue   == 0) {
+      bgColor = {
+        "background-color": "#c5c5c5" + "!important",
+        color: "#b7b7b7" + "!important"
+      };
+    } else if (cell.showNumbers) {
       const startColor = 360;
       const endColor = 0;
       const newColor =
-        (endColor - startColor) * (cell.numberValue / 8) + startColor;
+          (endColor - startColor) * (cell.numberValue / 8) + startColor;
       bgColor = {
-        "background-color": "#c5c5c5 !important",
+        "background-color": "#c5c5c5" + "!important",
         color: "hsl(" + newColor + ", 100%, 25%)" + "!important"
       };
     } else if (cell.isBlocked) {

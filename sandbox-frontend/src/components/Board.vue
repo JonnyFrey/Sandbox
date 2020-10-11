@@ -22,7 +22,7 @@
       </v-col>
     </v-row>
     <v-overlay absolute :value="loading" z-index="1">
-      <v-progress-circular indeterminate />
+      <v-progress-circular indeterminate @contextmenu.prevent />
     </v-overlay>
   </v-container>
 </template>
