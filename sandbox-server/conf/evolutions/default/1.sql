@@ -1,0 +1,10 @@
+-- !Ups
+
+CREATE TABLE IF NOT EXISTS Games (
+    id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT    NOT NULL
+)
+
+-- !Downs
+
+DROP TABLE IF EXISTS Games
