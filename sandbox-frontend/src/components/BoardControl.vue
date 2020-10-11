@@ -25,7 +25,7 @@
       </v-col>
       <v-col md="2">
         <v-text-field
-          v-model="bombs"
+          v-model.number="bombs"
           label="Bombs"
           type="number"
           :rules="[checkBombMax, checkBombMin]"
@@ -47,15 +47,15 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import _ from "lodash";
+import _, { DebouncedFunc } from "lodash";
 
 @Component({})
 export default class BoardControl extends Vue {
   private width = 10;
   private height = 10;
   private bombs = 10;
-  private boardSizeFunction;
-  private bombFunction;
+  private boardSizeFunction: DebouncedFunc<() => void>;
+  private bombFunction: DebouncedFunc<() => void>;
   private loading = false;
 
   mounted() {
@@ -68,7 +68,7 @@ export default class BoardControl extends Vue {
     }, 1500);
 
     this.bombFunction = _.debounce(() => {
-      this.$store.dispatch("updateBomb", Number.parseInt(this.bombs));
+      this.$store.dispatch("updateBomb", this.bombs);
       this.loading = false;
     }, 1500);
   }

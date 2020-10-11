@@ -35,21 +35,26 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
+interface Project {
+  name: string;
+  complete: boolean;
+}
+
 @Component({})
 export default class App extends Vue {
   private inProgress = 2;
-  private projectItems = [
+  private projectItems: Project[] = [
     { name: "Home Page", complete: true },
     { name: "Minesweeper Heatmap", complete: true },
     { name: "Sunshine Tracker", complete: false },
     { name: "Nonogram Solver", complete: false }
   ];
 
-  statusColor(item) {
+  statusColor(item: Project) {
     return item.complete ? "green" : "red";
   }
 
-  progressColor(idx) {
+  progressColor(idx: number) {
     return idx == this.inProgress ? "green" : undefined;
   }
 }

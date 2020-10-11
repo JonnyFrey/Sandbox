@@ -25,16 +25,16 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class Cell extends Vue {
   @Prop() private x: number;
   @Prop() private y: number;
-  @Prop({ default: false }) private loading;
+  @Prop({ default: false }) private loading: boolean;
 
   get cellValue() {
     const cell = this.cell;
-    let result = "";
+    let result;
     if (cell.showNumbers) {
       result = cell.numberValue;
     } else if (!cell.isBlocked) {
       if (cell.isFlag) {
-        result = "F";
+        return "F";
       } else {
         result = cell.probability.toFixed(2) * 100;
         if (cell.isFlag && !cell.showNumbers) {

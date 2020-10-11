@@ -30,7 +30,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Cell from "@/components/Cell.vue";
-import _ from "lodash";
+import _, {DebouncedFunc} from "lodash";
 
 @Component({
   components: {
@@ -38,13 +38,13 @@ import _ from "lodash";
   }
 })
 export default class Board extends Vue {
-  private cellUpdateCall;
+  private cellUpdateCall: DebouncedFunc<() => void>;
 
   mounted() {
     this.cellUpdateCall = _.debounce(() => {
       this.$store.dispatch("updateProbability");
       this.$store.dispatch("setDebounce", false);
-    }, 1000);
+    }, 1500);
 
     this.$store.watch(
       state => state.minesweeper.debounce,
