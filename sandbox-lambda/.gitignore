@@ -9,6 +9,7 @@ lambda_output.json
 **/bin/*
 **/out/*
 **/target/*
+.gradle
 **/lib_managed/*
 *.jar
 *.class
@@ -21,3 +22,5 @@ lambda_output.json
 *.iml
 *.ipr
 *.iws
+
+.aws-sam

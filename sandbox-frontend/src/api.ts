@@ -24,11 +24,9 @@ export const apiConfig = {
     returnRejectedPromiseOnError: true,
     withCredentials: false,
     timeout: 30000,
-    baseURL: `http://${window.location.hostname}:9000`,
+    baseURL: process.env.VUE_APP_BACKEND_URL ? process.env.VUE_APP_BACKEND_URL : `http://${window.location.hostname}:9000`,
     headers: {
         common: {
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            Pragma: "no-cache",
             "Content-Type": "application/json",
             Accept: "application/json",
         },
