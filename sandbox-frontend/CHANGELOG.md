@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.1.1
+* Adding more project information
+
 ## v1.1.0
 * Added version number in About page
 * Soften 0 number on Minesweeper page to make other numbers more visible

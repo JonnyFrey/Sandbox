@@ -98,6 +98,7 @@ export default class About extends Vue {
       description:
           "Get the front screen set with the old website look for nostalgic reasons",
       features: [
+        { name: "Add more details/animations to the projects in the About pages", complete: true, bug: false },
         { name: "Animate Splash Page", complete: false, bug: false }
       ]
     },
