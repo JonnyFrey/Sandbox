@@ -24,16 +24,18 @@
         />
       </v-col>
       <v-col md="2">
-        <v-text-field
-          v-model.number="bombs"
-          label="Bombs"
-          type="number"
-          :rules="[checkBombMax, checkBombMin]"
-          thumb-label
-          min="1"
-          max="900"
-          track-fill-color="green"
-        />
+        <v-form ref="bombForm">
+          <v-text-field
+              v-model.number="bombs"
+              label="Bombs"
+              type="number"
+              :rules="[checkBombMax, checkBombMin]"
+              thumb-label
+              min="1"
+              max="900"
+              track-fill-color="green"
+          />
+        </v-form>
       </v-col>
       <v-col md="1">
         <v-btn @click="resetBoard">Reset</v-btn>
@@ -57,18 +59,23 @@ export default class BoardControl extends Vue {
   private boardSizeFunction: DebouncedFunc<() => void>;
   private bombFunction: DebouncedFunc<() => void>;
   private loading = false;
+  private errored = false;
 
   mounted() {
     this.boardSizeFunction = _.debounce(() => {
-      this.$store.dispatch("setMinesweeperBoardSize", {
-        width: this.width,
-        height: this.height
-      });
+      if (this.$refs.bombForm.validate()) {
+        this.$store.dispatch("setMinesweeperBoardSize", {
+          width: this.width,
+          height: this.height
+        });
+      }
       this.loading = false;
     }, 1500);
 
     this.bombFunction = _.debounce(() => {
-      this.$store.dispatch("updateBomb", this.bombs);
+      if (this.$refs.bombForm.validate()) {
+        this.$store.dispatch("updateBomb", this.bombs);
+      }
       this.loading = false;
     }, 1500);
   }
@@ -91,17 +98,19 @@ export default class BoardControl extends Vue {
   @Watch("width")
   @Watch("height")
   updateBoard() {
-    this.$store.dispatch("setDebounce", false);
-    this.loading = true;
-    // Board Function Takes precedence
-    this.bombFunction.cancel();
-    this.boardSizeFunction();
+    if (!this.errored) {
+      this.$store.dispatch("setDebounce", false);
+      this.loading = true;
+      // Board Function Takes precedence
+      this.bombFunction.cancel();
+      this.boardSizeFunction();
+    }
   }
 
   @Watch("bombs")
   updateBomb() {
     // Board Function Takes precedence
-    if (!this.loading) {
+    if (!this.loading && !this.errored) {
       this.$store.dispatch("setDebounce", false);
       this.loading = true;
       this.bombFunction();
