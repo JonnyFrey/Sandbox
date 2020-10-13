@@ -63,6 +63,7 @@ export default class BoardControl extends Vue {
 
   mounted() {
     this.boardSizeFunction = _.debounce(() => {
+      //@ts-ignore
       if (this.$refs.bombForm.validate()) {
         this.$store.dispatch("setMinesweeperBoardSize", {
           width: this.width,
@@ -73,6 +74,7 @@ export default class BoardControl extends Vue {
     }, 1500);
 
     this.bombFunction = _.debounce(() => {
+      //@ts-ignore
       if (this.$refs.bombForm.validate()) {
         this.$store.dispatch("updateBomb", this.bombs);
       }

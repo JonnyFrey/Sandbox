@@ -64,7 +64,7 @@
 <script lang="ts">
 import {Component, Vue, Watch} from "vue-property-decorator";
 import anime from "animejs/lib/anime.es.js";
-import Project from "@/components/Project"
+import Project from "@/components/Project.vue";
 
 export interface ProjectMeta {
   name: string;
@@ -84,15 +84,10 @@ export interface Feature {
     Project
   }
 })
-export default class App extends Vue {
+export default class About extends Vue {
   private selected: number = null;
   private previousSelected: number = null;
-  private previousProject: ProjectMeta = {
-    name: "",
-    description: "",
-    complete: false,
-    features: []
-  };
+  private previousProject: ProjectMeta | null = null;
   private showCard = false;
   private animation;
   private versionNumber = process.env.VUE_APP_VERSION;
@@ -150,7 +145,7 @@ export default class App extends Vue {
 
   mounted() {
     if (!this.$vuetify.breakpoint.xs) {
-      anime.set(this.$refs.list.$el, {width: "200%"});
+      anime.set((this.$refs.list as Vue).$el, {width: "200%"});
     }
   }
 
@@ -163,10 +158,10 @@ export default class App extends Vue {
 
   @Watch("selected")
   listenToDetailClick() {
-    const target = this.$refs.list;
+    const target = (this.$refs.list as Vue);
     if (this.selected != null) {
       if (
-          this.previousProject.name == "" ||
+          this.previousProject == null ||
           this.previousProject.name == this.projectItems[this.selected].name
       ) {
         if (this.$vuetify.breakpoint.xs) {
@@ -187,7 +182,7 @@ export default class App extends Vue {
 
         }
       } else if (this.showCard) {
-        const card = this.$refs.card.$el
+        const card = ((this.$refs.card as Vue).$el as HTMLElement)
         anime
             .timeline({
               targets: card
@@ -213,7 +208,7 @@ export default class App extends Vue {
         });
       }
       anime({
-        targets: this.$refs.icon[this.selected].$el,
+        targets: (this.$refs.icon as Vue[])[this.selected].$el,
         rotate: 540,
         easing: "easeInOutBack",
         duration: 1000
@@ -221,7 +216,7 @@ export default class App extends Vue {
     } else {
       this.showCard = false;
       if (!this.$vuetify.breakpoint.xs) {
-        const ani = anime({
+        const ani  = anime({
           targets: target.$el,
           width: "200%",
           easing: "easeInOutBack",
@@ -229,14 +224,14 @@ export default class App extends Vue {
         });
         ani.finished.then(() => {
           this.showCard = false;
-          this.previousProject = {name: ""};
+          this.previousProject = null;
         });
         this.animation = ani;
       }
     }
     if (this.previousSelected != null) {
       anime({
-        targets: this.$refs.icon[this.previousSelected].$el,
+        targets: (this.$refs.icon as Vue[])[this.previousSelected].$el,
         rotate: 0,
         easing: "easeInOutBack",
         duration: 1000
