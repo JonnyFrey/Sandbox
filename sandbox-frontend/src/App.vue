@@ -40,7 +40,12 @@
       </v-list>
     </v-navigation-drawer>
     <v-main>
-      <transition name="slide-fade" mode="out-in">
+      <transition
+        name="slide-fade"
+        mode="out-in"
+        @before-leave="callMoving(true)"
+        @after-enter="callMoving(false)"
+      >
         <router-view />
       </transition>
     </v-main>
@@ -48,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class App extends Vue {
@@ -59,13 +64,17 @@ export default class App extends Vue {
     { name: "About", path: "/about", icon: "mdi-progress-wrench" }
   ];
 
+  callMoving(payload: boolean) {
+    this.$store.dispatch("moving", payload);
+  }
+
   autoCollapse() {
     this.drawer = false;
   }
 }
 </script>
 
-<style>
+<style scoped>
 .slide-fade-enter {
   transform: translateX(-100px);
   opacity: 0;

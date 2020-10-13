@@ -82,7 +82,8 @@ export default class Cell extends Vue {
     } else if (cell.isFlag) {
       bgColor = {
         "background-color": "#FF0000" + "!important",
-        color: "#FFFFFF" + "!important"
+        color: "#FFFFFF" + "!important",
+        "font-size": "xx-large"
       };
     } else {
       const startColor = 100;
@@ -111,8 +112,6 @@ export default class Cell extends Vue {
 
   swapValues(event: MouseEvent) {
     const shouldUpdate = this.cell.showNumbers;
-    console.log("Should Update " + shouldUpdate);
-    console.log(this.cell);
     this.$store.dispatch("swapValuesCell", { x: this.x, y: this.y });
     if (shouldUpdate) {
       this.$emit("cellUpdate");
